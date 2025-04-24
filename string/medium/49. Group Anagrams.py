@@ -1,3 +1,4 @@
+from collections import defaultdict
 from typing import List
 
 
@@ -10,12 +11,9 @@ class Solution:
         should be equal
         # sorted list
         """
-        d = dict()
+        d = defaultdict(list)
         for s in strs:
             t = str(sorted(s))
-            if t in d.keys():
-                d[t].append(s)
-            else:
-                d[t] = [s]
+            d[t].append(s)
 
-        return [x for x in d.values()]
+        return list(d.values())
