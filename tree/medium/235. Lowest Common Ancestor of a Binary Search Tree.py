@@ -9,40 +9,12 @@ class TreeNode:
 
 class Solution:
     def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
-        # BFS
-        queue = []
-        queue.append([[], root])
-        pa, qa = [], []
+        cur = root
 
-        while queue and (not pa or not qa):
-            a, node = queue.pop()
-            na = copy.deepcopy(a)
-            na.append(node.val)
-            if node.val == p.val:
-                pa = na
-            if node.val == q.val:
-                qa = na
-            if node.left:
-                queue.append([na, node.left])
-            if node.right:
-                queue.append([na, node.right])
-
-        res = None
-        for i in range(min(len(pa), len(qa))):
-            if pa[i] == qa[i]:
-                res = int(pa[i])
+        while cur:
+            if p.val > cur.val and q.val > cur.val:
+                cur = cur.right
+            elif p.val < cur.val and q.val < cur.val:
+                cur = cur.left
             else:
-                break
-
-        # find TreeNode
-        queue = []
-        queue.append(root)
-        while queue:
-            node = queue.pop()
-            if node.val != res:
-                if node.left:
-                    queue.append(node.left)
-                if node.right:
-                    queue.append(node.right)
-            else:
-                return node
+                return cur
