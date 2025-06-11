@@ -18,21 +18,20 @@ class WordDictionary:
 
     def search(self, word: str) -> bool:
         def dfs(index, cur):
-            if not cur:
-                return False
-            if len(word) - 1 < index:
+            if len(word) == index:
                 return cur.isWord
-                
+
             c = word[index]
             if c == '.':
                 for child in cur.children.values():
                     if dfs(index+1, child):
                         return True
                 return False
+                # same as
+                # return any(dfs(index + 1, child) for child in cur.children.values())
             elif c not in cur.children:
                 return False
-            else:
-                return dfs(index+1, cur.children[c])
+            return dfs(index+1, cur.children[c])
 
         return dfs(0, self.head)
         
