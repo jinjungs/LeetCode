@@ -1,23 +1,22 @@
 class Solution:
     def numDecodings(self, s: str) -> int:
         n = len(s)
-        dp = ['#'] * n
-        eng_char = set([str(x) for x in range(1,27)])
+        dp = [-1] * (n + 1)  # dp[i]: from index i to end, number of ways
 
-        def dfs(i, prev) -> int:
-            if i >= n:
+        def dfs(i) -> int:
+            if i == n:
                 return 1
-            if dp[i] != '#':
+            if s[i] == '0':
+                return 0
+            if dp[i] != -1:
                 return dp[i]                
 
-            res = 0
-            if s[i:i+1] in eng_char:
-                res += dfs(i+1, prev)
-            if i < n-1 and s[i:i+2] in eng_char:
-                res += dfs(i+2, prev)
+            res = dfs(i+1)
+            if i < n-1 and 10 <= int(s[i:i+2]) <= 26:
+                res += dfs(i+2)
             
-            dp[i] = res * prev
+            dp[i] = res
             return dp[i]
 
-        return dfs(0, 1)
+        return dfs(0)
                             
