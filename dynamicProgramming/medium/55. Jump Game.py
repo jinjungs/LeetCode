@@ -43,3 +43,13 @@ class Solution:
             maxIndex = max(i + num, maxIndex)
             if maxIndex == i:
                 return False
+            
+    # 25/06/23 Greedy
+    def canJump(self, nums: List[int]) -> bool:
+        goal = len(nums) -1
+
+        for i in range(len(nums)-2, -1, -1):
+            if i + nums[i] >= goal:
+                goal = i
+
+        return goal == 0
