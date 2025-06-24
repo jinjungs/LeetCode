@@ -40,3 +40,23 @@ class Solution:
             result.sort()
 
         return result
+
+# 25/06/23 
+class Solution2:
+    def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
+        res = []
+
+        for i, interval in enumerate(intervals):
+            s, e = interval[0], interval[1]
+            ns, ne = newInterval[0], newInterval[1]
+            if e < ns:
+                res.append(interval)
+            elif ne < s:
+                res.append(newInterval)
+                return res + intervals[i:]
+            else:
+                newInterval = [min(s,ns), max(e,ne)]
+
+        res.append(newInterval)
+        return res
+            
