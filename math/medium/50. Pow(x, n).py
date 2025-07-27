@@ -17,3 +17,16 @@ class Solution:
 
         return result if n > 0 else 1/result
 
+class Solution:
+    def myPow(self, x: float, n: int) -> float:
+        # x = 3 n = 2^31
+        # x^2^30 * x^2^30
+
+        def dfs(k:int) -> int:
+            if k == 0:
+                return 1
+            half = dfs(k // 2)
+            return half * half * (1 if k % 2 == 0 else x)
+            
+        res = dfs(abs(n))
+        return res if n > 0 else 1 / res        
