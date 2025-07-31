@@ -36,10 +36,27 @@ class Solution:
 
         prev = nodes[0]
         for i in range(1, len(nodes)):
-            print(prev.val, nodes[i].val)
             lca = union(prev, nodes[i])
-            print(lca.val)
             prev = lca
 
         return prev
+        
+class Solution:
+    def lowestCommonAncestor(self, root: 'TreeNode', nodes: 'List[TreeNode]') -> 'TreeNode':
+        node_set = set(nodes)
+
+        def dfs(node):
+            if not node:
+                return None
+            if node in node_set:
+                return node
+
+            left = dfs(node.left)
+            right = dfs(node.right)
+
+            if left and right:
+                return node
+            return left or right
+
+        return dfs(root)
         
