@@ -1,5 +1,6 @@
 from collections import defaultdict
 from math import inf
+from typing import List
 class Solution:
     def findTheCity(self, n: int, edges: List[List[int]], distanceThreshold: int) -> int:
         # floyd-warshall
