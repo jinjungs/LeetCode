@@ -1,36 +1,34 @@
 from typing import List
-
+from math import inf
 
 class Solution:
-    # original solution
+    # DP - original solution
     def jump(self, nums: List[int]) -> int:
-        canReach = [(False, len(nums)-1) for _ in range(len(nums))]
-        canReach[0] = (True, 0)
+        n = len(nums)
+        dp = [inf] * n
+        dp[0] = 0
 
-        for i in range(len(nums)):
-            if not canReach[i][0]:
-                continue
-            for j in range(1, nums[i]+1):
-                if i+j < len(nums):
-                    canReach[i+j] = (True, min(canReach[i+j][1], canReach[i][1] + 1))
+        for i in range(n-1):
+            for j in range(nums[i]+1):
+                if i + j >= n:
+                    break
+                dp[i+j] = min(dp[i+j], dp[i] + 1)
 
-        return canReach[-1][1]
+        return dp[-1]
 
-    # use less memory solution
+    # Greedy(BFS) - use less memory solution
     def jump(self, nums: List[int]) -> int:
-        if not nums or len(nums) == 1:
-            return 0
+        n = len(nums)
+        l = r = 0 
+        res = 0
 
-        result = 0
-        i = 0
-        currMax = nextMax = nums[0]
+        while r < n - 1:
+            far = 0
+            for i in range(l, r+1):
+                far = max(far, i + nums[i])
+            l = r+1
+            r = far
+            res += 1
 
-        while i < len(nums):
-            while i <= nextMax and i < len(nums):
-                currMax = max(currMax, i + nums[i])
-                i += 1
-            nextMax = currMax
-            result += 1
-
-        return result
+        return res
 
