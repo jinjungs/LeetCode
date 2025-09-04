@@ -14,29 +14,21 @@ class Solution:
     def copyRandomList(self, head: 'Optional[Node]') -> 'Optional[Node]':
         if not head:
             return None
+        
+        # old to new
+        h = {}
+        curr = head
+        while curr:
+            h[curr] = Node(curr.val)
+            curr = curr.next
 
-        d = dict()
-
-        d_head = Node(head.val, head.next, head.random)
-        d[head] = d_head
-        return_head = d_head
-
-        # put in dict
-        while head and head.next:            
-            head = head.next
-            new_next_head = Node(head.val, head.next, head.random)
-
-            d[head] = new_next_head            
-            d_head.next = new_next_head
-            d_head = d_head.next            
-            
-        d_head = return_head
-
-        # copy next, random
-        while d_head:
-            d_head.random = None if not d_head.random else d.get(d_head.random)
-            d_head = d_head.next
-
-        return return_head
+        # fill next and random
+        curr = head
+        while curr:
+            h[curr].random = h.get(curr.random)
+            h[curr].next = h.get(curr.next)
+            curr = curr.next
+        
+        return h[head]
 
         
