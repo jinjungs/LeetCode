@@ -16,7 +16,7 @@ class Solution:
             j = half - i - 2 # B
 
             Aleft = A[i] if i >= 0 else float('-inf')
-            Aright = A[i + 1] if i < (i + 1) < len(A) else float('inf')
+            Aright = A[i + 1] if (i + 1) < len(A) else float('inf')
             Bleft = B[j] if j >= 0 else float('-inf')
             Bright = B[j + 1] if (j + 1) < len(B) else float('inf')
 
