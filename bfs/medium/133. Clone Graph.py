@@ -6,6 +6,9 @@ class Node:
 
 from typing import Optional
 from collections import deque
+
+
+# 1. BFS
 class Solution:
     def cloneGraph(self, node: Optional['Node']) -> Optional['Node']:
         if not node:
@@ -36,3 +39,24 @@ class Solution:
 
         return clone_node
 
+# 2. DFS
+class Solution:
+    def cloneGraph(self, node: Optional['Node']) -> Optional['Node']:
+        if not node:
+            return None
+
+        visited = {}
+
+        def dfs(curr):
+            if curr in visited:
+                return visited[curr]
+
+            new_node = Node(curr.val)            
+            visited[curr] = new_node
+            
+            for nei in curr.neighbors:                
+                new_node.neighbors.append(dfs(nei))
+
+            return new_node
+
+        return dfs(node)
