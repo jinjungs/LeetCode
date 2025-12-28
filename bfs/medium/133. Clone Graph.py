@@ -13,31 +13,19 @@ class Solution:
     def cloneGraph(self, node: Optional['Node']) -> Optional['Node']:
         if not node:
             return None
-        if not node.neighbors:
-            return Node(node.val, None)
-
-        clone_node = Node(node.val, node.neighbors)
-        q = deque([clone_node])
-        visited = dict()
+        
+        visited = {node: Node(node.val)}
+        q = deque([node])
 
         while q:
-            clone_head = q.popleft()
+            curr = q.popleft()
+            for nei in curr.neighbors:
+                if nei not in visited:
+                    visited[nei] = Node(nei.val)
+                    q.append(nei)
+                visited[curr].neighbors.append(visited[nei])
 
-            if clone_head and clone_head.neighbors:
-                new_neighbors = []
-                for neighbor in clone_head.neighbors:
-                    if neighbor.val not in visited.keys():
-                        clone_neighbor = Node(neighbor.val, neighbor.neighbors)
-                        new_neighbors.append(clone_neighbor)
-                        q.append(clone_neighbor)
-                        visited[clone_neighbor.val] = clone_neighbor
-                    else:
-                        new_neighbors.append(visited[neighbor.val])
-
-                clone_head.neighbors = new_neighbors
-                visited[clone_head.val] = clone_head
-
-        return clone_node
+        return visited[node]        
 
 # 2. DFS
 class Solution:
