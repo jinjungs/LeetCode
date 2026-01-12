@@ -1,5 +1,6 @@
 from collections import defaultdict
 from typing import List
+from collections import deque
 
 
 class Solution:
@@ -72,4 +73,35 @@ class Solution2:
             if not dfs(course):
                 return False
         return True
+    
+# Solved: 26/01/12
+class Solution:
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        graph = defaultdict(set)
+        indegree = [0] * numCourses
+
+        # 1. create prerequisite map (key: prerequisite, value: next course)
+        for c, p in prerequisites:
+            graph[p].add(c)
+            indegree[c] += 1
+
+        # 2. start with courses having no prerequisites
+        q = deque()
+        for i in range(numCourses):
+            if indegree[i] == 0:
+                q.append(i)
+
+        taken = 0
+
+        while q:
+            course = q.popleft()
+            taken += 1
+
+            for nextCourse in graph[course]:
+                indegree[nextCourse] -= 1
+                if indegree[nextCourse] == 0:
+                    q.append(nextCourse)
+
+        return taken == numCourses
+        
         
