@@ -1,6 +1,7 @@
 from typing import List
+from collections import deque
 
-
+# DFS
 class Solution:
     def pacificAtlantic(self, heights: List[List[int]]) -> List[List[int]]:
         if not heights:
@@ -35,3 +36,45 @@ class Solution:
                     res.append([i,j])
 
         return res
+
+
+# BFS
+class Solution:
+    def pacificAtlantic(self, heights: List[List[int]]) -> List[List[int]]:
+        ROWS, COLS = len(heights), len(heights[0])
+        dx, dy = [0,1,0,-1], [1,0,-1,0]        
+
+        def bfs(starts):
+            reachable = [[False] * COLS for _ in range(ROWS)]
+            q = deque()
+
+            for r, c in starts:
+                if not reachable[r][c]:
+                    reachable[r][c] = True
+                    q.append((r,c))
+
+            while q:
+                x, y = q.popleft()
+                for i in range(4):
+                    nx, ny = x + dx[i], y + dy[i]
+                    if 0 <= nx < ROWS and 0 <= ny < COLS and not reachable[nx][ny] and heights[nx][ny] >= heights[x][y]:
+                        reachable[nx][ny] = True
+                        q.append((nx,ny))
+
+            return reachable
+
+        # pacific
+        pacific_starts = [(r, 0) for r in range(ROWS)] + [(0, c) for c in range(1, COLS)]
+        atlantic_starts = [(r, COLS-1) for r in range(ROWS)] + [(ROWS-1, c) for c in range(COLS-1)]
+
+        pacific = bfs(pacific_starts)
+        atlantic = bfs(atlantic_starts)
+
+        res = []
+        for r in range(ROWS):
+            for c in range(COLS):
+                if pacific[r][c] and atlantic[r][c]:
+                    res.append([r,c])
+
+        return res
+                
